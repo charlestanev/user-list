@@ -1,25 +1,20 @@
-import './App.css';
-import { Footer } from './components/common/Footer.js';
-import { Header } from "./components/common/Header.js";
-import { Search } from './search/Search.js';
-import { UserSection } from './user-section/UserSection.js';
 import { useState, useEffect } from 'react'
 
+import * as userService from './services/userService.js';
 
-const baseUrl = 'http://localhost:3005/api';
+import { Header } from "./components/common/Header.js";
+import { Search } from './components/search/Search.js';
+import { UserList } from './user-list/UserList.js';
+import { Footer } from './components/common/Footer.js';
+import './App.css';
 
 function App() {
 	const [users, setUsers] = useState([]);
 
 	useEffect(() => {
-		fetch(`${baseUrl}/users`)
-			.then(res => res.json())
-			.then(result => {
-				setUsers(result.users);
-			});
+		userService.getAll()
+			.then(users => setUsers(users));
 	}, []);
-
-	console.log(users);
 
 	return (
 		<div>
@@ -27,16 +22,11 @@ function App() {
 
 			{/* <!-- Main component  --> */}
 			<main className="main">
-
-
 				{/* <!-- Section component  --> */}
 				<section className="card users-container">
 					{/* <!-- Search bar component --> */}
 					<Search />
-
-					<UserSection />
-
-
+					<UserList users={users} />
 					{/* <!-- New user button  --> */}
 					<button className="btn-add btn">Add new user</button>
 
@@ -94,14 +84,6 @@ function App() {
 
 			</main>
 			<Footer />
-
-
-
-
-
-
-
-
 
 		</div >
 	);
