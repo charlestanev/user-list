@@ -5,18 +5,47 @@ import * as userService from '../services/userService.js';
 import { UserDetails } from "./user-details/UserDetails.js";
 import { UserItem } from "./user-item/UserItem.js";
 
+const UserActions = {
+	Details: 'details',
+	Edit: 'edit',
+	Delete: 'delete',
+}
+
 export const UserList = ({
 	users,
 }) => {
 
-	const [selectedUser, setSelectedUser] = useState(null);
+	const [userAction, setUserAction] = useState({ user: null, action: null });
 
 	const detailsClickHandler = (userId) => {
 		console.log(userId);
 		userService.getOne(userId)
 			.then(user => {
-				setSelectedUser(user);
-			})
+				setUserAction({
+					user,
+					action: UserActions.Details
+				});
+			});
+	}
+
+	const editClickHandler = (userId) => {
+		userService.getOne(userId)
+			.then(user => {
+				setUserAction({
+					user,
+					action: UserActions.Edit
+				});
+			});
+	}
+
+	const deleteClickHandler = (userId) => {
+		userService.getOne(userId)
+			.then(user => {
+				setUserAction({
+					user,
+					action: UserActions.Delete
+				});
+			});
 	}
 
 	// const detailsCloseHandler = () => {
@@ -28,9 +57,12 @@ export const UserList = ({
 		<div className="table-wrapper">
 			{/* <!-- Overlap components  --> */}
 
-			{selectedUser && <UserDetails user={selectedUser}
-			// onClose={detailsCloseHandler} 
-			/>}
+			{userAction.action == UserActions.Details &&
+				<UserDetails
+					user={userAction.user}
+				// onClose={detailsCloseHandler} 
+				/>
+			}
 
 			<table className="table">
 				<thead>
