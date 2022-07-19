@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import * as userService from '../services/userService.js';
+import * as userService from '../../services/userService.js';
 
 import { UserDetails } from "./user-details/UserDetails.js";
 import { UserItem } from "./user-item/UserItem.js";
@@ -49,7 +49,7 @@ export const UserList = ({
 	}
 
 	// const detailsCloseHandler = () => {
-	// 	setSelectedUser(null)
+	// 	setUserAction({ user: null, action: null });
 	// }
 
 	return (
@@ -60,7 +60,7 @@ export const UserList = ({
 			{userAction.action == UserActions.Details &&
 				<UserDetails
 					user={userAction.user}
-				// onClose={detailsCloseHandler} 
+				// onClose={detailsCloseHandler}
 				/>
 			}
 

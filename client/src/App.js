@@ -4,7 +4,7 @@ import * as userService from './services/userService.js';
 
 import { Header } from "./components/common/Header.js";
 import { Search } from './components/search/Search.js';
-import { UserList } from './user-list/UserList.js';
+import { UserList } from './components/user-list/UserList.js';
 import { Footer } from './components/common/Footer.js';
 import './App.css';
 
