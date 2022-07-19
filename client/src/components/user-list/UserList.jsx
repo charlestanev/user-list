@@ -2,14 +2,12 @@ import { useState } from "react";
 
 import * as userService from '../../services/userService.js';
 
+import { UserActions } from "./userListConstants.jsx";
 import { UserDetails } from "./user-details/UserDetails.js";
+import { UserEdit } from "./user-edit/UserEdit.jsx";
 import { UserItem } from "./user-item/UserItem.js";
 
-const UserActions = {
-	Details: 'details',
-	Edit: 'edit',
-	Delete: 'delete',
-}
+
 
 export const UserList = ({
 	users,
@@ -17,38 +15,18 @@ export const UserList = ({
 
 	const [userAction, setUserAction] = useState({ user: null, action: null });
 
-	const detailsClickHandler = (userId) => {
+	const userActionClickHandler = (userId, actionType) => {
 		console.log(userId);
 		userService.getOne(userId)
 			.then(user => {
 				setUserAction({
 					user,
-					action: UserActions.Details
+					action: actionType
 				});
 			});
 	}
 
-	const editClickHandler = (userId) => {
-		userService.getOne(userId)
-			.then(user => {
-				setUserAction({
-					user,
-					action: UserActions.Edit
-				});
-			});
-	}
-
-	const deleteClickHandler = (userId) => {
-		userService.getOne(userId)
-			.then(user => {
-				setUserAction({
-					user,
-					action: UserActions.Delete
-				});
-			});
-	}
-
-	// const detailsCloseHandler = () => {
+	// const closeHandler = () => {
 	// 	setUserAction({ user: null, action: null });
 	// }
 
@@ -61,6 +39,13 @@ export const UserList = ({
 				<UserDetails
 					user={userAction.user}
 				// onClose={detailsCloseHandler}
+				/>
+			}
+
+			{userAction.action == UserActions.Edit &&
+				<UserEdit
+					user={userAction.user}
+					// onClose={closeHandler}
 				/>
 			}
 
@@ -123,7 +108,11 @@ export const UserList = ({
 					{/* {props.users.map(user => <UserItem key={user._id} user={user}/>)} */}
 					{users.map(user =>
 						<tr key={user._id}>
-							<UserItem user={user} onDetailsClick={detailsClickHandler} />
+							<UserItem 
+							user={user} 
+							onActionClick={userActionClickHandler}
+							
+							/>
 						</tr>
 					)}
 				</tbody>
